@@ -10,10 +10,6 @@ const News = (props) => {
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    useEffect(() => {
-        document.title = `${capitalizeFirstLetter(props.category)}-NewsMania`;
-        updateNews();
-    }, [])
     const updateNews = async () => {
         const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page}&pageSize=${props.pagesize}`;
         setLoading(true)
@@ -23,31 +19,15 @@ const News = (props) => {
         setArticles(parsedData.articles)
         setLoading(false)
     }
-    const updateNewsNext = async () => {
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page + 1}&pageSize=${props.pagesize}`;
-        setLoading(true)
-        let data = await fetch(url);
-        let parsedData = await data.json()
-        console.log(parsedData)
-        setArticles(parsedData.articles)
-        setLoading(false)
-    }
-    const updateNewsPrev = async () => {
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page - 1}&pageSize=${props.pagesize}`;
-        setLoading(true)
-        let data = await fetch(url);
-        let parsedData = await data.json()
-        console.log(parsedData)
-        setArticles(parsedData.articles)
-        setLoading(false)
-    }
+    useEffect(() => {
+        document.title = `${capitalizeFirstLetter(props.category)}-NewsMania`;
+        updateNews();
+    }, [page])
     const HandleNextClick = () => {
         setPage(page + 1)
-        updateNewsNext();
     }
     const HandlePrevClick = () => {
         setPage(page - 1)
-        updateNewsPrev();
     }
     return (
         <div className="container my-3">
